@@ -2,6 +2,18 @@
 
 > Agente de IA capaz de responder perguntas em linguagem natural sobre dados de notas fiscais (CSV), otimizando a análise e tomada de decisão no setor financeiro.
 
+## 🎯 Demo & Equipe
+
+Experimente o chat ao vivo: **[Chat Demo](https://manurs.app.n8n.cloud/webhook/4972343f-ebd6-47bf-8cb9-1b71b618045b/chat)**
+
+**Desenvolvido por:**
+- 👤 **Ana Manuella da S. Ribeiro** [![GitHub](https://img.shields.io/badge/GitHub-anamanuellar-181717?style=flat&logo=github)](https://github.com/anamanuellar)  [![Email](https://img.shields.io/badge/Email-ribeiro.anamanuella@gmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:ribeiro.anamanuella@gmail.com) 
+- 👤 **Enos Luiz da Silva Correa** [![Email](https://img.shields.io/badge/Email-enosluiz@gmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:enosluiz@gmail.com)  
+- 👤 **Jader Augusto Maciel Fonseca** [![Email](https://img.shields.io/badge/Email-jader.augusto@gmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:jader.augusto@gmail.com)
+- 👤 **Letivan Gonçalves de Mendonça Filho** [![GitHub](https://img.shields.io/badge/GitHub-Letivan--filho-181717?style=flat&logo=github)](https://github.com/Letivan-filho) [![Email](https://img.shields.io/badge/Email-letivan@gmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:letivan@gmail.com) 
+- 👤 **Rodrigo Arantes** [![Email](https://img.shields.io/badge/Email-arantes.rodrigo@gmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:arantes.rodrigo@gmail.com)
+- 👤 **Sergio Guerrero Naves de Souza** [![Email](https://img.shields.io/badge/Email-senaguerrero@hotmail.com-D14836?style=flat&logo=gmail&logoColor=white)](mailto:senaguerrero@hotmail.com)
+
 ## 📋 Sobre o Projeto
 
 O **ARGOS IA** é uma solução desenvolvida em n8n que utiliza inteligência artificial para análise automatizada de notas fiscais. O sistema permite que profissionais façam perguntas em linguagem natural sobre dados fiscais e recebam respostas precisas e contextualizadas.
