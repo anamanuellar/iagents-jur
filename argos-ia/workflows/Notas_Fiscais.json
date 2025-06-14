@@ -1,0 +1,240 @@
+{
+  "name": "Notas Fiscais",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://drive.google.com/uc?export=download&id=1jaNl2kL-a32HO_jXH3g3J1mGHzHWm9YD",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "User-Agent",
+              "value": "Mozilla/5.0"
+            },
+            {
+              "name": "Accept",
+              "value": "*/*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -880,
+        100
+      ],
+      "id": "f995a9d6-82b1-4483-82de-13d8fcdb4f74",
+      "name": "HTTP Request",
+      "alwaysOutputData": true,
+      "executeOnce": false,
+      "notesInFlow": true
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.compression",
+      "typeVersion": 1.1,
+      "position": [
+        -660,
+        100
+      ],
+      "id": "c3b88fe4-ac09-4950-81db-c50c69cfe3e7",
+      "name": "Compression"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Script de Transformação Final\n// Modo do Nó: Run Once for All Items\n\nconst newOutputItems = [];\n// Usa o método de acesso confirmado pelo teste anterior\nconst inputItem = $input.all()[0]; \n\nconsole.log(\"--- Script de Transformação Final ---\");\nconsole.log(\"Input Item (LOG S1):\", JSON.stringify(inputItem, null, 2));\n\nif (inputItem && inputItem.binary) {\n  const binaryObjects = inputItem.binary; // Ex: { file_0: <objeto_binario_n8n_0>, file_1: <objeto_binario_n8n_1> }\n  \n  console.log(\"Chaves dos Objetos Binários (LOG S2):\", Object.keys(binaryObjects));\n\n  for (const binaryKey in binaryObjects) { // binaryKey será \"file_0\", depois \"file_1\"\n    const currentN8nBinaryObject = binaryObjects[binaryKey]; // Este é o objeto binário do n8n\n\n    // Tenta obter o nome do arquivo diretamente do objeto binário do n8n\n    // Objetos binários do n8n geralmente têm propriedades .fileName, .mimeType, .fileExtension\n    if (currentN8nBinaryObject && typeof currentN8nBinaryObject.fileName === 'string') {\n      console.log(`Processando ${binaryKey} (LOG S3): Nome do Arquivo do objeto binário = ${currentN8nBinaryObject.fileName}`);\n      \n      newOutputItems.push({\n        json: {\n          fileName: currentN8nBinaryObject.fileName,\n          // Você pode tentar acessar outras propriedades se existirem e forem úteis:\n          // fileExtension: currentN8nBinaryObject.fileExtension,\n          // mimeType: currentN8nBinaryObject.mimeType,\n          originalBinaryKey: binaryKey // Para referência, se necessário\n        },\n        binary: {\n          // Passa o objeto binário real do n8n para a propriedade 'data'.\n          // O nó \"Read/Write Files from Disk\" usará isso.\n          data: currentN8nBinaryObject \n        }\n      });\n      console.log(`Item adicionado para ${binaryKey} (LOG S4). Total de itens agora: ${newOutputItems.length}`);\n    } else {\n      console.log(`AVISO (LOG S5): Não foi possível obter fileName para ${binaryKey} diretamente do objeto binário, ou o objeto/fileName está ausente.`);\n      // Você pode adicionar um tratamento de erro aqui se um arquivo sem nome não deve ser processado.\n    }\n  }\n} else {\n  console.log(\"ERRO (LOG S6): Input item ou inputItem.binary está ausente.\");\n}\n\nconsole.log(\"--- Finalizando Script de Transformação ---\");\nconsole.log(\"Total de itens de saída (LOG S7):\", newOutputItems.length);\n// Para ver a estrutura dos itens de saída (sem mostrar o conteúdo binário completo)\nconsole.log(\"Itens de Saída (LOG S8):\", JSON.stringify(newOutputItems, (key, value) => {\n    if (key === 'data' && value && value.constructor && value.constructor.name === 'Object' && Object.keys(value).length === 0 ) {\n        return \"[Referência de Dados Binários]\";\n    }\n    if (value instanceof Buffer) { return \"[Buffer]\"; }\n    return value;\n}, 2));\n\nreturn newOutputItems;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -440,
+        100
+      ],
+      "id": "fc2aec05-b3a5-4b26-8754-6c98f9f144bb",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e2f35b49-7574-48d1-955b-127d50669d2c",
+              "leftValue": "={{ $json.fileName }}",
+              "rightValue": "202401_NFs_Cabecalho.csv",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -220,
+        100
+      ],
+      "id": "c1e290fc-9233-4cb1-8249-ea3f0786af12",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "c2cb035a-2c98-4dd4-a54f-8f296a758dfd",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "id": "95c00d64-bed7-40fa-b08e-89f4b0f0e6bc",
+      "name": "Extract from File1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        260,
+        100
+      ],
+      "id": "981e977b-3134-4455-a179-263820d99ecf",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1100,
+        100
+      ],
+      "id": "0915846d-efb8-4d21-99ac-d978e3f8b8f4",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Compression",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compression": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Extract from File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b7af95e4-6467-45f6-a626-4a4276da850a",
+  "meta": {
+    "instanceId": "66bd8acf63653731ce884538528a747f996a1d7e194fe0c29fa45bbb80885360"
+  },
+  "id": "FBDnbe5g75UnoMyf",
+  "tags": []
+}
